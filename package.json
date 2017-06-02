@@ -1,0 +1,45 @@
+{
+  "name": "promise-cancelable",
+  "browser": "dist/promise-cancelable.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
+  "version": "1.0.0",
+  "description": "Wrapper to create cancelable promises",
+  "main": "index.js",
+  "repository": "git@github.com:joaogranado/promise-cancelable.git",
+  "author": "João Granado <joao.mota.garcia@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "es"
+  ],
+  "scripts": {
+    "bundle-commonjs": "BABEL_ENV=commonjs babel src --out-dir lib",
+    "bundle-es": "BABEL_ENV=es babel src --out-dir es",
+    "bundle-umd-min": "BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/promise-cancelable.min.js",
+    "bundle-umd": "BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/promise-cancelable.js",
+    "bundle": "yarn run bundle-commonjs && yarn run bundle-es && yarn run bundle-umd-min && yarn run bundle-umd",
+    "clear": "rimraf lib es dist coverage",
+    "prepublish": "yarn clear && yarn bundle",
+    "test": "jest",
+    "test-watch": "yarn test -- --watch --notify"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.5.1",
+    "eslint": "^3.19.0",
+    "eslint-plugin-import": "^2.3.0",
+    "jest": "^20.0.4",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.41.6",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
+  }
+}
