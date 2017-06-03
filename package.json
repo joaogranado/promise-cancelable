@@ -6,7 +6,6 @@
   "jsnext:main": "es/index.js",
   "version": "1.0.0",
   "description": "Wrapper to create cancelable promises",
-  "main": "index.js",
   "repository": "git@github.com:joaogranado/promise-cancelable.git",
   "author": "João Granado <joao.mota.garcia@gmail.com>",
   "license": "MIT",
