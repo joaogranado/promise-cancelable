@@ -27,7 +27,7 @@ export default class Cancelable {
 
     this.promise = new Promise((resolve, reject) => {
       // Wraps the executor into a promise and passes `resolve`, `reject` and `onCancel` methods.
-      const wrapped = new Promise((resolve, reject) => {
+      new Promise((resolve, reject) => {
         executor(
           value => {
             resolve(value);
