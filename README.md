@@ -5,6 +5,10 @@
 A `Promise` cannot be canceled since once it is created and fulfillment or a rejection handler is registered to it, there is no external mechanism to stop its progression.
 A `Cancelable` wraps the ES6 standard `Promise`, and it is compatible with whatever promise-consuming tool.
 
+## Status
+
+[![Travis](https://img.shields.io/travis/joaogranado/promise-cancelable.svg?style=flat-square)](https://travis-ci.org/joaogranado/promise-cancelable)
+
 ## Installation
 
 ```sh
@@ -97,7 +101,7 @@ Cancelable
 
 ### `Cancelable.resolve(value: any)`
 Has the same behavior as the `Promise.resolve` method.
-Returns a `Cancelable` object that is resolved with the given value. If the value is a thenable (i.e. has a then method), the returned promise will unwrap that thenable, adopting its eventual state. Otherwise the returned promise will be fulfilled with the value.
+Returns a `Cancelable` object that is resolved with the given value. If the value is a thenable (i.e. has a then method), the returned cancelable will unwrap that thenable, adopting its eventual state. Otherwise the returned cancelable will be fulfilled with the value.
 
 ### `Cancelable.reject(value: any)`
 Has the same behavior as the `Promise.reject` method.

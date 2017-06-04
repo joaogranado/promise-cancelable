@@ -20,11 +20,12 @@
     "bundle-es": "BABEL_ENV=es babel src --out-dir es",
     "bundle-umd-min": "BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/promise-cancelable.min.js",
     "bundle-umd": "BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/promise-cancelable.js",
-    "bundle": "yarn run bundle-commonjs && yarn run bundle-es && yarn run bundle-umd-min && yarn run bundle-umd",
+    "bundle": "npm run bundle-commonjs && npm run bundle-es && npm run bundle-umd-min && npm run bundle-umd",
     "clear": "rimraf lib es dist coverage",
-    "prepublish": "yarn clear && yarn bundle",
+    "lint": "eslint src __tests__",
+    "prepublish": "npm run clear && npm run bundle",
     "test": "jest",
-    "test-watch": "yarn test -- --watch --notify"
+    "test-watch": "npm test -- --watch --notify"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
