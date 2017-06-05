@@ -85,7 +85,7 @@ export default class Cancelable {
    */
 
   static isCancelable(value) {
-    return value instanceof Cancelable && value[CANCELABLE_IDENTIFIER];
+    return !!(value && value[CANCELABLE_IDENTIFIER]);
   }
 
   /**
