@@ -1,7 +1,5 @@
 # Cancelable
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/joaogranado/promise-cancelable.svg)](https://greenkeeper.io/)
-
 > Wrapper to create cancelable promises.
 
 A `Promise` cannot be canceled since once it is created and fulfillment or a rejection handler is registered to it, there is no external mechanism to stop its progression.
@@ -9,7 +7,8 @@ A `Cancelable` wraps the ES6 standard `Promise`, and it is compatible with whate
 
 ## Status
 
-[![Travis](https://img.shields.io/travis/joaogranado/promise-cancelable.svg?style=flat-square)](https://travis-ci.org/joaogranado/promise-cancelable)
+[![Travis](https://img.shields.io/travis/joaogranado/promise-cancelable.svg)](https://travis-ci.org/joaogranado/promise-cancelable)
+[![Greenkeeper badge](https://badges.greenkeeper.io/joaogranado/promise-cancelable.svg)](https://greenkeeper.io/)
 
 ## Installation
 
