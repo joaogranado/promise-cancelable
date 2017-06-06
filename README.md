@@ -1,5 +1,7 @@
 # Cancelable
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/joaogranado/promise-cancelable.svg)](https://greenkeeper.io/)
+
 > Wrapper to create cancelable promises.
 
 A `Promise` cannot be canceled since once it is created and fulfillment or a rejection handler is registered to it, there is no external mechanism to stop its progression.
