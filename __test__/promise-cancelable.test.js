@@ -149,6 +149,23 @@ describe('Cancelable', () => {
     });
   });
 
+  describe('cancel', () => {
+    it('calls the given callback', () => {
+      const callback = jest.fn();
+      const cancelable = new Cancelable((resolve, reject, onCancel) => {
+        resolve();
+
+        onCancel(cb => {
+          cb();
+        });
+      });
+
+      cancelable.cancel(callback);
+
+      expect(callback).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('race', () => {
     it('resolves the given values', async () => {
       return Cancelable.race([1, 2]).then(value => {

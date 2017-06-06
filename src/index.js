@@ -145,7 +145,7 @@ export default class Cancelable {
    * registered cancelables including its children.
    */
 
-  cancel() {
+  cancel(cb = () => {}) {
     let current = this;
 
     if (current.isCanceled()) {
@@ -169,7 +169,7 @@ export default class Cancelable {
       current.setCanceled();
 
       if (current.onCancel && typeof current.onCancel === 'function') {
-        current.onCancel();
+        current.onCancel(cb);
       }
 
       current = prev.parent;

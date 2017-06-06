@@ -62,7 +62,9 @@ delay(100)
   .cancel(); // > 'Cancelled 1'
 ```
 
-### `Cancelable.all(iterable: Iterable<T>): Cancelable<Array<T>>`
+### Static methods
+
+#### `Cancelable.all(iterable: Iterable<T>): Cancelable<Array<T>>`
 Has the same behaviour as the `Promise.all` method, except when it is canceled it cancels all `Cancelable`s included on the iterable argument.
 
 Returns a cancelable that either fulfills when all of the values in the iterable argument have fulfilled or rejects as soon as one of the cancelables in the iterable argument rejects. This method wraps the `Promise.all` method and creates a list of cancelables that are canceled when `.cancel()` is called.
@@ -82,7 +84,7 @@ Cancelable
   // > Cancelled 2
 ```
 
-### `Cancelable.race(iterable: Iterable<T>): Cancelable<T>`
+#### `Cancelable.race(iterable: Iterable<T>): Cancelable<T>`
 Has the same behaviour as the `Promise.race` method, except when it is canceled it cancels all `Cancelable`s included on the iterable argument.
 Returns a cancelable that fulfills or rejects as soon as one of the cancelables in the iterable fulfills or rejects, with the value or reason from that cancelable. This method wraps the `Promise.all` method and creates a list of cancelables that are canceled when `.cancel()` is called.
 
@@ -101,28 +103,48 @@ Cancelable
   // > Cancelled 2
 ```
 
-### `Cancelable.resolve(value: any)`
+#### `Cancelable.resolve(value: any)`
 Has the same behavior as the `Promise.resolve` method.
 Returns a `Cancelable` object that is resolved with the given value. If the value is a thenable (i.e. has a then method), the returned cancelable will unwrap that thenable, adopting its eventual state. Otherwise the returned cancelable will be fulfilled with the value.
 
-### `Cancelable.reject(value: any)`
+#### `Cancelable.reject(value: any)`
 Has the same behavior as the `Promise.reject` method.
 Returns a `Cancelable` object that is rejected with the given reason.
 
-### `Cancelable.isCancelable(value: any): boolean`
+#### `Cancelable.isCancelable(value: any): boolean`
 Determines whether the passed value is a `Cancelable`.
 
-### `Cancelable.prototype.isCanceled(): boolean`
+### Instance methods
+
+#### `Cancelable.prototype.isCanceled(): boolean`
 Determines whether the created `Cancelable` is canceled.
 
-### `Cancelable.prototype.cancel()`
+#### `Cancelable.prototype.cancel(callback?: Function)`
 Cancels the `Cancelable`. It iterates upwards the chain canceling all the registered cancelables including its children.
+Unlike other implementations that rejects the promise when it is canceled, the `cancel` method receives an optional callback that is passed to the `onCancel` function. This way it is possible to cancel a cancelable without unhandled rejections.
 
-### `Cancelable.prototype.catch(onRejected: Function): Cancelable`
+```js
+const delay = delta => new Cancelable((resolve, reject, onCancel) => {
+  const id = setTimeout(() => {
+    resolve();
+  });
+
+  onCancel(cb => {
+    clearTimeout(id);
+    cb(id);
+  });
+});
+
+delta(1000).cancel(() => {
+  console.log(`Timeout "${id}" was canceled!`)
+}); // > Timeout "1" was canceled!
+```
+
+#### `Cancelable.prototype.catch(onRejected: Function): Cancelable`
 Has the same behavior of `Promise.catch` method.
 Appends a rejection handler callback to the cancelable, and returns a new `Cancelable` resolving to the return value of the callback if it is called, or to its original fulfillment value if the cancelable is instead fulfilled.
 
-### `Cancelable.prototype.then(onFullfilled: Function, onRejected: Function): Cancelable`
+#### `Cancelable.prototype.then(onFullfilled: Function, onRejected: Function): Cancelable`
 Has the same behavior of `Promise.then` method.
 Appends fulfillment and rejection handlers to the cancelable, and returns a new `Cancelable` resolving to the return value of the called handler, or to its original settled value if the promise was not handled.
 
