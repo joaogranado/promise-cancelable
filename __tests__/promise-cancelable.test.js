@@ -37,11 +37,18 @@ describe('Cancelable', () => {
     });
 
     it('passes a cancelation handler to the executor which is called when it is canceled', () => {
-      const cb = jest.fn();
+      expect.assertions(2);
 
-      new Cancelable((resolve, reject, onCancel) => {
+      const cb = jest.fn();
+      const cancelable = new Cancelable((resolve, reject, onCancel) => {
         onCancel(cb);
-      }).cancel();
+      });
+
+      cancelable.catch(error => {
+        expect(error.name).toBe('CancelationError');
+      });
+
+      cancelable.cancel();
 
       expect(cb).toHaveBeenCalledTimes(1);
     });
@@ -91,6 +98,12 @@ describe('Cancelable', () => {
     it('returns true if the cancelable was canceled', () => {
       const cancelable = Cancelable.resolve();
 
+      expect.assertions(2);
+
+      cancelable.catch(error => {
+        expect(error.name).toBe('CancelationError');
+      });
+
       cancelable.cancel();
 
       expect(cancelable.isCanceled()).toBe(true);
@@ -134,6 +147,12 @@ describe('Cancelable', () => {
       const cancelable2 = Cancelable.resolve();
       const all = Cancelable.all([cancelable1, cancelable2]);
 
+      expect.assertions(10);
+
+      all.catch(error => {
+        expect(error.message).toBe('Cancelable was canceled');
+      });
+
       expect(all.children.length).toBe(2);
       expect(all.children).toEqual([cancelable1, cancelable2]);
       expect(all.isCanceled()).toBe(false);
@@ -152,17 +171,36 @@ describe('Cancelable', () => {
   describe('cancel', () => {
     it('calls the given callback', () => {
       const callback = jest.fn();
+
+      expect.assertions(2);
+
       const cancelable = new Cancelable((resolve, reject, onCancel) => {
         resolve();
 
         onCancel(cb => {
           cb();
         });
+      }).catch(error => {
+        expect(error.name).toBe('CancelationError');
       });
 
       cancelable.cancel(callback);
 
       expect(callback).toHaveBeenCalledTimes(1);
+    });
+
+    it('rejects the promise', () => {
+      const cancelable = new Cancelable(resolve => {
+        resolve();
+      });
+
+      expect.assertions(1);
+
+      cancelable.catch(error => {
+        expect(error.name).toBe('CancelationError');
+      });
+
+      cancelable.cancel();
     });
   });
 
@@ -183,9 +221,15 @@ describe('Cancelable', () => {
     });
 
     it('cancels all the given cancelables', () => {
+      expect.assertions(10);
+
       const cancelable1 = Cancelable.resolve();
       const cancelable2 = Cancelable.resolve();
       const race = Cancelable.race([cancelable1, cancelable2]);
+
+      race.catch(error => {
+        expect(error.name).toBe('CancelationError');
+      });
 
       expect(race.children.length).toBe(2);
       expect(race.children).toEqual([cancelable1, cancelable2]);

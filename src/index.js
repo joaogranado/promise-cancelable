@@ -4,6 +4,14 @@
 
 const CANCELABLE_IDENTIFIER = '@@Cancelable';
 
+class CancelationError extends Error {
+  constructor() {
+    super('Cancelable was canceled');
+
+    this.name = 'CancelationError';
+  }
+}
+
 /**
  * Export `Cancelable`.
  */
@@ -26,6 +34,8 @@ export default class Cancelable {
     });
 
     this.promise = new Promise((resolve, reject) => {
+      this._reject = reject;
+
       // Wraps the executor into a promise and passes `resolve`, `reject` and `onCancel` methods.
       new Promise((resolve, reject) => {
         executor(
@@ -41,14 +51,10 @@ export default class Cancelable {
         );
       })
         .then(value => {
-          if (!this.isCanceled()) {
-            resolve(value);
-          }
+          resolve(value);
         })
         .catch(reason => {
-          if (!this.isCanceled()) {
-            reject(reason);
-          }
+          reject(reason);
         });
     });
   }
@@ -170,6 +176,10 @@ export default class Cancelable {
 
       if (current.onCancel && typeof current.onCancel === 'function') {
         current.onCancel(cb);
+      }
+
+      if (!current.parent) {
+        current._reject(new CancelationError());
       }
 
       current = prev.parent;
