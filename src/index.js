@@ -4,7 +4,7 @@
 
 const CANCELABLE_IDENTIFIER = '@@Cancelable';
 
-class CancelationError extends Error {
+export class CancelationError extends Error {
   constructor() {
     super('Cancelable was canceled');
 
