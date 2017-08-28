@@ -11,6 +11,7 @@ const uglify = require('rollup-plugin-uglify');
  */
 
 const config = {
+  exports: 'named',
   format: 'umd',
   moduleName: 'Cancelable',
   plugins: [
