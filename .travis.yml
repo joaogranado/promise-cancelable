@@ -4,6 +4,7 @@ before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 node_js:
   - 7
+  - 10
 script:
   - yarn lint
   - yarn test
